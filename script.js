@@ -68,6 +68,7 @@ taskList.innerHTML+=`
 document.getElementById("total").innerText=tasks.length;
 document.getElementById("completed").innerText=completed;
 document.getElementById("pending").innerText=tasks.length-completed;
+searchTask();
 }
 
 function deleteTask(index){
@@ -99,12 +100,18 @@ let search=document.getElementById("search").value.toLowerCase();
 
 let cards=document.querySelectorAll(".task");
 
+let matchCount=0;
+
 cards.forEach(card=>{
-card.style.display=
-card.innerText.toLowerCase().includes(search)
-? "block"
-: "none";
+    let visible = card.innerText.toLowerCase().includes(search);
+    card.hidden = !visible;
+    if(visible) matchCount++;
 });
+
+let noResults = document.getElementById("noResults");
+if(noResults){
+    noResults.style.display = matchCount === 0 && cards.length > 0 ? "block" : "none";
+}
 }
 
 function saveData(){

@@ -12,15 +12,16 @@
     <span class="shape shape1"></span>
     <span class="shape shape2"></span>
     <span class="shape shape3"></span>
+    <span class="shape shape4"></span>
 </div>
 
 <div class="container">
     <header class="dashboard-header">
         <div>
             <h1>OJT Progress Tracker</h1>
-            <p>Organize your tasks, deadlines, and progress with a clean dashboard view.</p>
+            <p>Track your OJT progress with a sleek, dark dashboard built for focus and clarity.</p>
         </div>
-        <div class="chip">Dashboard</div>
+        <div class="chip">✨ OJT Suite</div>
     </header>
 
     <div class="summary">
@@ -39,7 +40,7 @@
     </div>
 
     <div class="toolbar">
-        <input type="text" id="search" placeholder="Search tasks..." onkeyup="searchTask()">
+        <input type="text" id="search" placeholder="Search by title, category, status or notes..." oninput="searchTask()">
     </div>
 
     <div class="form">
@@ -55,7 +56,8 @@
         <button onclick="addTask()">Add Task</button>
     </div>
 
-    <div id="taskList"></div>
+    <div id="taskList" class="task-grid"></div>
+    <div id="noResults" class="no-results hidden">No tasks match your search.</div>
 </div>
 
 <script src="script.js"></script>
