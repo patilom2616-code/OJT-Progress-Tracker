@@ -1,78 +1,112 @@
-// script.js
-
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 displayTasks();
 
 function addTask(){
 
-  let title = document.getElementById("taskInput").value;
-  let category = document.getElementById("categoryInput").value;
-  let date = document.getElementById("dateInput").value;
-  let status = document.getElementById("statusInput").value;
+let title=document.getElementById("title").value;
+let category=document.getElementById("category").value;
+let date=document.getElementById("date").value;
+let status=document.getElementById("status").value;
+let notes=document.getElementById("notes").value;
 
-  if(title === ""){
-    alert("Please enter task title");
-    return;
-  }
+if(title===""){
+alert("Enter Task Title");
+return;
+}
 
-  let task = {
-    title,
-    category,
-    date,
-    status
-  };
+tasks.push({
+title,
+category,
+date,
+status,
+notes
+});
 
-  tasks.push(task);
+saveData();
+displayTasks();
 
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-
-  displayTasks();
-
-  document.getElementById("taskInput").value = "";
-  document.getElementById("categoryInput").value = "";
-  document.getElementById("dateInput").value = "";
+document.getElementById("title").value="";
+document.getElementById("category").value="";
+document.getElementById("date").value="";
+document.getElementById("notes").value="";
 }
 
 function displayTasks(){
 
-  let taskList = document.getElementById("taskList");
+let taskList=document.getElementById("taskList");
+taskList.innerHTML="";
 
-  taskList.innerHTML = "";
+let completed=0;
 
-  let completed = 0;
-  let pending = 0;
+tasks.forEach((task,index)=>{
 
-  tasks.forEach((task, index) => {
+if(task.status==="Completed"){
+completed++;
+}
 
-    if(task.status === "Completed"){
-      completed++;
-    } else {
-      pending++;
-    }
+taskList.innerHTML+=`
+<div class="task ${task.status==='Completed'?'completed':'pending'}">
+<h3>${task.title}</h3>
 
-    taskList.innerHTML += `
-      <div class="task">
-        <h3>${task.title}</h3>
-        <p><b>Category:</b> ${task.category}</p>
-        <p><b>Date:</b> ${task.date}</p>
-        <p><b>Status:</b> ${task.status}</p>
+<p><b>Category:</b> ${task.category}</p>
+<p><b>Date:</b> ${task.date}</p>
+<p><b>Status:</b> ${task.status}</p>
+<p><b>Notes:</b> ${task.notes}</p>
 
-        <button onclick="deleteTask(${index})">Delete</button>
-      </div>
-    `;
-  });
+<div class="actions">
+<button onclick="completeTask(${index})">Complete</button>
 
-  document.getElementById("total").innerText = tasks.length;
-  document.getElementById("completed").innerText = completed;
-  document.getElementById("pending").innerText = pending;
+<button onclick="editTask(${index})">Edit</button>
+
+<button onclick="deleteTask(${index})">Delete</button>
+</div>
+</div>
+`;
+});
+
+document.getElementById("total").innerText=tasks.length;
+document.getElementById("completed").innerText=completed;
+document.getElementById("pending").innerText=tasks.length-completed;
 }
 
 function deleteTask(index){
+tasks.splice(index,1);
+saveData();
+displayTasks();
+}
 
-  tasks.splice(index, 1);
+function completeTask(index){
+tasks[index].status="Completed";
+saveData();
+displayTasks();
+}
 
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+function editTask(index){
 
-  displayTasks();
+let newTitle=prompt("Edit Task",tasks[index].title);
+
+if(newTitle){
+tasks[index].title=newTitle;
+saveData();
+displayTasks();
+}
+}
+
+function searchTask(){
+
+let search=document.getElementById("search").value.toLowerCase();
+
+let cards=document.querySelectorAll(".task");
+
+cards.forEach(card=>{
+card.style.display=
+card.innerText.toLowerCase().includes(search)
+? "block"
+: "none";
+});
+}
+
+function saveData(){
+localStorage.setItem("tasks",JSON.stringify(tasks));
 }

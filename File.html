@@ -1,47 +1,47 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OJT Progress Tracker</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OJT Progress Tracker</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
+<div class="container">
 
     <h1>OJT Progress Tracker</h1>
 
-    <!-- Input Form -->
-    <div class="form-box">
-      <input type="text" id="taskInput" placeholder="Enter Task Title">
-
-      <input type="text" id="categoryInput" placeholder="Enter Category">
-
-      <input type="date" id="dateInput">
-
-      <select id="statusInput">
-        <option value="Pending">Pending</option>
-        <option value="In Progress">In Progress</option>
-        <option value="Completed">Completed</option>
-      </select>
-
-      <button onclick="addTask()">Add Task</button>
-    </div>
-
-    <!-- Summary -->
     <div class="summary">
-      <h3>Total Tasks: <span id="total">0</span></h3>
-      <h3>Completed: <span id="completed">0</span></h3>
-      <h3>Pending: <span id="pending">0</span></h3>
+        <div>Total: <span id="total">0</span></div>
+        <div>Completed: <span id="completed">0</span></div>
+        <div>Pending: <span id="pending">0</span></div>
     </div>
 
-    <!-- Task List -->
+    <input type="text" id="search" placeholder="Search Task..." onkeyup="searchTask()">
+
+    <div class="form">
+        <input type="text" id="title" placeholder="Task Title">
+
+        <input type="text" id="category" placeholder="Category">
+
+        <input type="date" id="date">
+
+        <select id="status">
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Completed</option>
+        </select>
+
+        <textarea id="notes" placeholder="Notes"></textarea>
+
+        <button onclick="addTask()">Add Task</button>
+    </div>
+
     <div id="taskList"></div>
 
-  </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
