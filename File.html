@@ -8,38 +8,54 @@
 </head>
 <body>
 
-<div class="container">
+<div class="background-shapes">
+    <span class="shape shape1"></span>
+    <span class="shape shape2"></span>
+    <span class="shape shape3"></span>
+</div>
 
-    <h1>OJT Progress Tracker</h1>
+<div class="container">
+    <header class="dashboard-header">
+        <div>
+            <h1>OJT Progress Tracker</h1>
+            <p>Organize your tasks, deadlines, and progress with a clean dashboard view.</p>
+        </div>
+        <div class="chip">Dashboard</div>
+    </header>
 
     <div class="summary">
-        <div>Total: <span id="total">0</span></div>
-        <div>Completed: <span id="completed">0</span></div>
-        <div>Pending: <span id="pending">0</span></div>
+        <div class="summary-card">
+            <span>Total Tasks</span>
+            <strong id="total">0</strong>
+        </div>
+        <div class="summary-card accent">
+            <span>Completed</span>
+            <strong id="completed">0</strong>
+        </div>
+        <div class="summary-card">
+            <span>Pending</span>
+            <strong id="pending">0</strong>
+        </div>
     </div>
 
-    <input type="text" id="search" placeholder="Search Task..." onkeyup="searchTask()">
+    <div class="toolbar">
+        <input type="text" id="search" placeholder="Search tasks..." onkeyup="searchTask()">
+    </div>
 
     <div class="form">
         <input type="text" id="title" placeholder="Task Title">
-
         <input type="text" id="category" placeholder="Category">
-
         <input type="date" id="date">
-
         <select id="status">
             <option>Pending</option>
             <option>In Progress</option>
             <option>Completed</option>
         </select>
-
         <textarea id="notes" placeholder="Notes"></textarea>
-
         <button onclick="addTask()">Add Task</button>
     </div>
 
     <div id="taskList"></div>
-
 </div>
 
 <script src="script.js"></script>
