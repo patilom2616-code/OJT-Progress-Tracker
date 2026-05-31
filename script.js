@@ -4,14 +4,14 @@ displayTasks();
 
 function addTask(){
 
-let title=document.getElementById("title").value;
-let category=document.getElementById("category").value;
+let title=document.getElementById("title").value.trim();
+let category=document.getElementById("category").value.trim();
 let date=document.getElementById("date").value;
 let status=document.getElementById("status").value;
-let notes=document.getElementById("notes").value;
+let notes=document.getElementById("notes").value.trim();
 
 if(title===""){
-alert("Enter Task Title");
+alert("Please enter task title");
 return;
 }
 
@@ -23,7 +23,7 @@ status,
 notes
 });
 
-saveData();
+saveTasks();
 displayTasks();
 
 document.getElementById("title").value="";
@@ -35,6 +35,7 @@ document.getElementById("notes").value="";
 function displayTasks(){
 
 let taskList=document.getElementById("taskList");
+
 taskList.innerHTML="";
 
 let completed=0;
@@ -45,8 +46,8 @@ if(task.status==="Completed"){
 completed++;
 }
 
-taskList.innerHTML+=`
-<div class="task ${task.status==='Completed'?'completed':'pending'}">
+taskList.innerHTML += `
+<div class="task">
 <h3>${task.title}</h3>
 
 <p><b>Category:</b> ${task.category}</p>
@@ -55,11 +56,22 @@ taskList.innerHTML+=`
 <p><b>Notes:</b> ${task.notes}</p>
 
 <div class="actions">
-<button onclick="completeTask(${index})">Complete</button>
 
-<button onclick="editTask(${index})">Edit</button>
+<button class="complete"
+onclick="completeTask(${index})">
+Complete
+</button>
 
-<button onclick="deleteTask(${index})">Delete</button>
+<button class="edit"
+onclick="editTask(${index})">
+Edit
+</button>
+
+<button class="delete"
+onclick="deleteTask(${index})">
+Delete
+</button>
+
 </div>
 </div>
 `;
@@ -71,49 +83,54 @@ document.getElementById("pending").innerText=tasks.length-completed;
 searchTask();
 }
 
-function deleteTask(index){
-tasks.splice(index,1);
-saveData();
+function completeTask(index){
+tasks[index].status="Completed";
+saveTasks();
 displayTasks();
 }
 
-function completeTask(index){
-tasks[index].status="Completed";
-saveData();
+function deleteTask(index){
+tasks.splice(index,1);
+saveTasks();
 displayTasks();
 }
 
 function editTask(index){
 
-let newTitle=prompt("Edit Task",tasks[index].title);
+let updatedTitle=prompt(
+"Edit Task",
+tasks[index].title
+);
 
-if(newTitle){
-tasks[index].title=newTitle;
-saveData();
+if(updatedTitle){
+tasks[index].title=updatedTitle;
+saveTasks();
 displayTasks();
 }
 }
 
 function searchTask(){
+    let search = (document.getElementById("search")?.value || "").toLowerCase();
+    let cards = document.querySelectorAll(".task");
+    let visible = 0;
 
-let search=document.getElementById("search").value.toLowerCase();
+    cards.forEach(card => {
+        let isMatch = card.innerText.toLowerCase().includes(search);
+        card.style.display = isMatch ? "grid" : "none";
+        if (isMatch) visible++;
+    });
 
-let cards=document.querySelectorAll(".task");
-
-let matchCount=0;
-
-cards.forEach(card=>{
-    let visible = card.innerText.toLowerCase().includes(search);
-    card.hidden = !visible;
-    if(visible) matchCount++;
-});
-
-let noResults = document.getElementById("noResults");
-if(noResults){
-    noResults.style.display = matchCount === 0 && cards.length > 0 ? "block" : "none";
+    let noResults = document.getElementById("noResults");
+    if (search.trim() === "") {
+        noResults.classList.add("hidden");
+    } else {
+        noResults.classList.toggle("hidden", visible !== 0);
+    }
 }
-}
 
-function saveData(){
-localStorage.setItem("tasks",JSON.stringify(tasks));
+function saveTasks(){
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
 }
